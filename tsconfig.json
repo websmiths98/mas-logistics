@@ -1,0 +1,79 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "incremental": true,
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules/.pnpm/@types+react@19.2.14/node_modules/@types",
+      "./node_modules/.pnpm/@types+react-dom@19.2.3_@types+react@19.2.14/node_modules/@types",
+      "./node_modules/.pnpm/@types+node@20.19.39/node_modules/@types"
+    ],
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": [
+        "./*"
+      ],
+      "react-dom": [
+        "./node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom"
+      ],
+      "react-dom/*": [
+        "./node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/*"
+      ],
+      "motion": [
+        "./node_modules/.pnpm/motion@11.18.2_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/motion"
+      ],
+      "motion/*": [
+        "./node_modules/.pnpm/motion@11.18.2_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/motion/*"
+      ],
+      "@tabler/icons-react": [
+        "./node_modules/.pnpm/@tabler+icons-react@3.41.1_react@19.2.4/node_modules/@tabler/icons-react"
+      ],
+      "@tabler/icons-react/*": [
+        "./node_modules/.pnpm/@tabler+icons-react@3.41.1_react@19.2.4/node_modules/@tabler/icons-react/*"
+      ],
+      "tailwind-merge": [
+        "./node_modules/.pnpm/tailwind-merge@2.6.1/node_modules/tailwind-merge"
+      ],
+      "tailwind-merge/*": [
+        "./node_modules/.pnpm/tailwind-merge@2.6.1/node_modules/tailwind-merge/*"
+      ],
+      "clsx": [
+        "./node_modules/.pnpm/clsx@2.1.1/node_modules/clsx"
+      ],
+      "clsx/*": [
+        "./node_modules/.pnpm/clsx@2.1.1/node_modules/clsx/*"
+      ]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts",
+    "**/*.mts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
+

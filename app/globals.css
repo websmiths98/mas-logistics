@@ -1,0 +1,385 @@
+@import url("https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Inter:wght@400;500;600&display=swap");
+@import "tailwindcss";
+
+/* ── Design Tokens ── */
+:root {
+  /* Brand palette */
+  --navy-950: #020814;
+  --navy-900: #060a14;
+  --navy-800: #0a1020;
+  --slate-700: #1e2a3a;
+  --amber-400: #f59e0b;
+  --amber-300: #fcd34d;
+  --cyan-400: #22d3ee;
+  --sky-300: #7dd3fc;
+
+  /* Typography — wired to Next.js font vars from layout.tsx */
+  --font-display: var(--font-rajdhani), "Arial Black", sans-serif;
+  --font-body: var(--font-inter), system-ui, sans-serif;
+
+  /* Parallax hint */
+  --parallax-offset: 0px;
+}
+
+@theme inline {
+  --color-background: var(--navy-950);
+  --color-foreground: #f1f5f9;
+  --font-mono: ui-monospace, "SF Mono", "Fira Code", monospace;
+}
+
+/* ── Base Reset ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--navy-950);
+  color: #f1f5f9;
+  font-family: var(--font-body);
+  margin: 0;
+  padding: 0;
+  /* NOTE: overflow-x clip via clip-path keeps sticky working.
+     overflow:hidden on body would break position:sticky children. */
+  overflow-x: clip;
+}
+
+/* ── Hero sticky-stack container ──
+   The scroll track div must never have overflow:hidden on it
+   or sticky children won't stick. ── */
+#hero {
+  /* Overflow must be visible so sticky panels can escape the container */
+  overflow: visible;
+  position: relative;
+}
+
+/* ── Panel depth shadow (applied via inline style in HeroPanel.tsx) ──
+   Defined here as a named custom property for reference / override.  ── */
+:root {
+  --shadow-panel-depth:
+    0 -28px 90px rgba(0,0,0,0.70),
+    0 -10px 36px rgba(0,0,0,0.55),
+    0 -2px  10px rgba(0,0,0,0.45);
+}
+
+/* ── Parallax Performance Utility ── */
+.will-change-transform {
+  will-change: transform;
+}
+
+.transform-gpu {
+  transform: translateZ(0);
+}
+
+/* ── 3-D Card Flip utilities ──────────────────────────────────
+   Required for ServiceCard hover-flip to work cross-browser.
+   Safari needs -webkit- prefixes on backface-visibility.
+   ──────────────────────────────────────────────────────────── */
+.card-flip-scene {
+  perspective: 1000px;
+}
+
+.card-flip-inner {
+  transform-style:  preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  /* Slow, cinematic flip — matches premium content reveal cadence */
+  transition: transform 0.85s cubic-bezier(0.45, 0, 0.12, 1);
+}
+
+.card-flip-scene:hover .card-flip-inner {
+  transform: rotateY(180deg);
+}
+
+.card-face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.card-face-back {
+  transform: rotateY(180deg);
+}
+
+/* ── Glassmorphism utilities ────────────────────────────────────
+   Used by HeroPanel content card, stat chip, CTA strip etc.
+   ──────────────────────────────────────────────────────────── */
+.glass-dark {
+  background:           rgba(0, 0, 0, 0.22);
+  backdrop-filter:      blur(18px) saturate(1.8);
+  -webkit-backdrop-filter: blur(18px) saturate(1.8);
+  border:               1px solid rgba(255,255,255,0.10);
+  box-shadow:           0 8px 48px rgba(0,0,0,0.38),
+                        inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+.glass-light {
+  background:           rgba(255,255,255,0.55);
+  backdrop-filter:      blur(20px) saturate(1.8);
+  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  border:               1px solid rgba(255,255,255,0.6);
+  box-shadow:           0 8px 40px rgba(0,0,0,0.08),
+                        inset 0 1px 0 rgba(255,255,255,0.7);
+}
+
+/* ── GSAP-style scroll reveal — initial state is set by JS.
+   No CSS rule needed here; useGsapReveal sets opacity:0
+   via el.style on mount before first scroll frame.        */
+
+/* ── Smooth image rendering ── */
+img {
+  image-rendering: auto;
+  max-width: 100%;
+}
+
+/* ── Selection style ── */
+::selection {
+  background: rgba(245, 158, 11, 0.35);
+  color: white;
+}
+
+/* ── Custom scrollbar ── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--navy-900);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(245, 158, 11, 0.4);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(245, 158, 11, 0.6);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   BIDIRECTIONAL SCROLL REVEAL — GSAP ScrollTrigger style
+   ─────────────────────────────────────────────────────────────
+   Three states per element:
+     .is-below   → hidden, shifted DOWN  (default / scroll-down entry)
+     .is-above   → hidden, shifted UP    (scroll-up re-entry)
+     .is-visible → fully shown, at rest
+   Hook stamps is-above / is-below on exit so CSS knows which
+   direction to animate from on the NEXT entry pass.
+   ══════════════════════════════════════════════════════════════ */
+
+/* ─── Shared transition ────────────────────────────────────────
+   cubic-bezier(0.22, 1, 0.36, 1) — extreme slow-start, fast-mid,
+   gentle landing. Feels like content "breathing" into position.
+   Much slower than before: 1.05s gives the cinematic buffer feel.
+   ─────────────────────────────────────────────────────────────── */
+.reveal,
+.reveal-left,
+.reveal-right,
+.reveal-scale {
+  transition:
+    opacity   1.05s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1.05s cubic-bezier(0.22, 1, 0.36, 1),
+    filter    0.70s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+/* ════════════════════════════════════
+   .reveal — vertical fade-in-up/down
+   ════════════════════════════════════ */
+
+/* Scroll DOWN entry → element rises from below */
+.reveal.is-below {
+  opacity: 0;
+  transform: translateY(64px);
+  filter: blur(4px);
+}
+
+/* Scroll UP entry → element drops from above */
+.reveal.is-above {
+  opacity: 0;
+  transform: translateY(-64px);
+  filter: blur(4px);
+}
+
+/* Visible (either direction) */
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0px);
+}
+
+/* ════════════════════════════════════
+   .reveal-left — horizontal slide
+   ════════════════════════════════════ */
+
+/* Scroll DOWN → slides in from left */
+.reveal-left.is-below {
+  opacity: 0;
+  transform: translateX(-56px);
+  filter: blur(3px);
+}
+
+/* Scroll UP → slides in from right (mirrored) */
+.reveal-left.is-above {
+  opacity: 0;
+  transform: translateX(56px);
+  filter: blur(3px);
+}
+
+.reveal-left.is-visible {
+  opacity: 1;
+  transform: translateX(0);
+  filter: blur(0px);
+}
+
+/* ════════════════════════════════════
+   .reveal-right — horizontal slide
+   ════════════════════════════════════ */
+
+/* Scroll DOWN → slides in from right */
+.reveal-right.is-below {
+  opacity: 0;
+  transform: translateX(56px);
+  filter: blur(3px);
+}
+
+/* Scroll UP → slides in from left (mirrored) */
+.reveal-right.is-above {
+  opacity: 0;
+  transform: translateX(-56px);
+  filter: blur(3px);
+}
+
+.reveal-right.is-visible {
+  opacity: 1;
+  transform: translateX(0);
+  filter: blur(0px);
+}
+
+/* ════════════════════════════════════
+   .reveal-scale — scale + fade
+   ════════════════════════════════════ */
+
+/* Scroll DOWN → scale up from slightly smaller */
+.reveal-scale.is-below {
+  opacity: 0;
+  transform: scale(0.88) translateY(36px);
+}
+
+/* Scroll UP → scale up from slightly smaller (same, symmetrical) */
+.reveal-scale.is-above {
+  opacity: 0;
+  transform: scale(0.88) translateY(-36px);
+}
+
+.reveal-scale.is-visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   Stagger delay helpers — 12 steps at 130 ms spacing
+   Each step is 130 ms apart → a slow, luxurious cascade wave.
+   Delay only applies on ENTER (.is-visible); EXIT is instant
+   so re-entry always starts fresh with no leftover timing.
+   Total span: stagger-0 → stagger-11 covers 0 → 1430 ms
+   ════════════════════════════════════════════════════════════════ */
+.stagger-0.is-visible  { transition-delay: 0ms;    }
+.stagger-1.is-visible  { transition-delay: 130ms;  }
+.stagger-2.is-visible  { transition-delay: 260ms;  }
+.stagger-3.is-visible  { transition-delay: 390ms;  }
+.stagger-4.is-visible  { transition-delay: 520ms;  }
+.stagger-5.is-visible  { transition-delay: 650ms;  }
+.stagger-6.is-visible  { transition-delay: 780ms;  }
+.stagger-7.is-visible  { transition-delay: 910ms;  }
+.stagger-8.is-visible  { transition-delay: 1040ms; }
+.stagger-9.is-visible  { transition-delay: 1170ms; }
+.stagger-10.is-visible { transition-delay: 1300ms; }
+.stagger-11.is-visible { transition-delay: 1430ms; }
+
+/* On EXIT — zero delay so elements snap back immediately,
+   keeping re-entry always crisp and unblocked.          */
+.stagger-0,  .stagger-1,  .stagger-2,  .stagger-3,
+.stagger-4,  .stagger-5,  .stagger-6,  .stagger-7,
+.stagger-8,  .stagger-9,  .stagger-10, .stagger-11 {
+  transition-delay: 0ms;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   LETTER STREAM REVEAL
+   Replayed on every hero panel re-entry (container/ship/aeroplane).
+   Each letter starts hidden and enters with per-letter delay.
+   ════════════════════════════════════════════════════════════════ */
+[data-letter-stream] {
+  display: inline-block;
+}
+
+[data-letter-stream] .letter-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+[data-letter-stream] .letter-gap {
+  white-space: pre;
+}
+
+[data-letter-stream] .letter {
+  display: inline-block;
+  opacity: 0;
+  transform: translate3d(0, 1.05em, 0) rotate(4deg);
+  filter: blur(8px);
+  transition:
+    opacity 650ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 650ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 560ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--letter-base, 0ms) + (var(--letter-index, 0) * 20ms));
+  will-change: transform, opacity, filter;
+}
+
+[data-letter-stream].letters-from-above .letter {
+  transform: translate3d(0, -1.05em, 0) rotate(-4deg);
+}
+
+[data-letter-stream].letters-from-below .letter {
+  transform: translate3d(0, 1.05em, 0) rotate(4deg);
+}
+
+[data-letter-stream].letters-visible .letter {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) rotate(0deg);
+  filter: blur(0);
+}
+
+/* ── Reduced motion global override ── */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  .will-change-transform {
+    will-change: auto;
+    transform: none !important;
+  }
+  /* Skip all reveal animations immediately */
+  .reveal,
+  .reveal-left,
+  .reveal-right,
+  .reveal-scale {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+  [data-letter-stream] .letter {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+}
