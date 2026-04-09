@@ -144,10 +144,10 @@ export default function ServicesSection() {
           <p
             className="text-black/60 text-lg max-w-2xl leading-relaxed reveal stagger-2"
             style={{ fontFamily: 'var(--font-body)' }}
-            aria-label="GravityFreight operates as the single point of control across land, ocean, and air — combining carrier networks, customs expertise, and real-time technology into one seamless freight operation."
+            aria-label="Mas Logistics operates as the single point of control across land, ocean, and air — combining carrier networks, customs expertise, and real-time technology into one seamless freight operation."
           >
             <span data-letter-stream className="inline-block align-top" style={{ '--letter-base': '220ms' } as CSSProperties}>
-              {renderLetterStream('GravityFreight operates as the single point of control across land, ocean, and air — combining carrier networks, customs expertise, and real-time technology into one seamless freight operation.')}
+              {renderLetterStream('Mas Logistics operates as the single point of control across land, ocean, and air — combining carrier networks, customs expertise, and real-time technology into one seamless freight operation.')}
             </span>
           </p>
         </div>
@@ -173,7 +173,7 @@ export default function ServicesSection() {
               Need a custom freight solution?
             </h3>
             <p className="text-black/60 text-sm font-mono">
-              Speak to a GravityFreight specialist. We lift what others can&apos;t.
+              Speak to a Mas Logistics specialist. We lift what others can&apos;t.
             </p>
           </div>
           <div className="flex gap-4 shrink-0">
@@ -212,12 +212,12 @@ export default function ServicesSection() {
             </div>
             <span className="text-black font-bold tracking-wider text-sm"
               style={{ fontFamily: 'var(--font-display)' }}>
-              GRAVITYFREIGHT
+              MAS LOGISTICS
             </span>
           </div>
           <div className="flex flex-col items-center text-center gap-1">
             <p className="text-black/40 text-xs font-mono tracking-widest mt-4 md:mt-0">
-              © 2025 GravityFreight. We Move What Others Can&apos;t Lift.
+              © 2025 Mas Logistics. We Move What Others Can&apos;t Lift.
             </p>
             <p className="text-black/70 text-[10px] font-bold tracking-[0.2em] uppercase">
               Powered by Websmith&apos;s

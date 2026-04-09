@@ -17,7 +17,7 @@ const rajdhani = Rajdhani({
 });
 
 export const metadata: Metadata = {
-  title: "GravityFreight — We Move What Others Can't Lift",
+  title: "Mas Logistics — We Move What Others Can't Lift",
   description:
     "Premium land, air, and ocean freight logistics. FCL, LCL, air charter, customs brokerage, last-mile delivery and real-time cargo tracking across 180+ coverage zones worldwide.",
   keywords: [
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     "last-mile delivery",
   ],
   openGraph: {
-    title: "GravityFreight — We Move What Others Can't Lift",
+    title: "Mas Logistics — We Move What Others Can't Lift",
     description:
       "Premium multimodal freight logistics — land, ocean, and air. Real-time tracking, customs expertise, global coverage.",
     type: "website",

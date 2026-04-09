@@ -19,7 +19,7 @@ export default function HeroSection() {
     <div
       id="hero"
       role="banner"
-      aria-label="GravityFreight — Hero"
+      aria-label="Mas Logistics — Hero"
       style={{ height: `${heroPanels.length * 100}svh` }}
     >
       {heroPanels.map((panel, index) => (

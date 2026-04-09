@@ -191,7 +191,7 @@ export default function HeroPanel({ config, panelIndex, zIndex }: HeroPanelProps
         zIndex,
         boxShadow: panelIndex > 0 ? DEPTH_SHADOW : 'none',
       }}
-      aria-label={`${config.tagline} — GravityFreight`}
+      aria-label={`${config.tagline} — Mas Logistics`}
     >
       {/* ── Background (parallax) ── */}
       <div
