@@ -1,11 +1,49 @@
 'use client';
 
-import { useRef, useCallback } from 'react';
+import { useRef, useCallback, Fragment, CSSProperties } from 'react';
 import { useParallax } from '@/components/hooks/useParallax';
 import ServiceCard from './ServiceCard';
 import { servicesData } from './servicesData';
 
 import { Carousel, Card } from '@/components/ui/apple-cards-carousel';
+
+function renderLetterStream(text: string) {
+  const lines = text.split('\n');
+  let letterIndex = 0;
+
+  return lines.map((line, lineIdx) => {
+    const words = line.split(' ');
+
+    return (
+      <Fragment key={`line-${lineIdx}`}>
+        {words.map((word, wordIdx) => (
+          <Fragment key={`word-${lineIdx}-${wordIdx}`}>
+            <span className="letter-word" aria-hidden="true">
+              {Array.from(word).map((char, charIdx) => {
+                const currentIndex = letterIndex;
+                letterIndex += 1;
+                return (
+                  <span
+                    key={`char-${lineIdx}-${wordIdx}-${charIdx}-${currentIndex}`}
+                    className="letter"
+                    style={{ '--letter-index': currentIndex } as CSSProperties}
+                    aria-hidden="true"
+                  >
+                    {char}
+                  </span>
+                );
+              })}
+            </span>
+            {wordIdx < words.length - 1 && (
+              <span className="letter-gap" aria-hidden="true"> </span>
+            )}
+          </Fragment>
+        ))}
+        {lineIdx < lines.length - 1 && <br />}
+      </Fragment>
+    );
+  });
+}
 
 export default function ServicesSection() {
   const bgRef = useRef<HTMLDivElement>(null);
@@ -32,7 +70,7 @@ export default function ServicesSection() {
         src: service.src,
         title: service.title,
         category: service.tag,
-        content: <ServiceCard data={service} index={index} />
+        content: <ServiceCard data={service} />
       }}
     />
   ));
@@ -43,8 +81,8 @@ export default function ServicesSection() {
       className="relative overflow-hidden"
       aria-labelledby="services-heading"
       style={{
-        // Deep Navy Blue background gradient
-        background: 'linear-gradient(180deg, #0B132B 0%, #060B19 40%, #03050A 100%)',
+        // Creamy White background gradient
+        background: 'linear-gradient(180deg, #FDFBF7 0%, #F5F3E9 100%)',
       }}
     >
       {/* ── Background parallax layer ── */}
@@ -64,9 +102,9 @@ export default function ServicesSection() {
 
       {/* ── Grid dot background ── */}
       <div
-        className="absolute inset-0 opacity-[0.025]"
+        className="absolute inset-0 opacity-[0.05]"
         style={{
-          backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.6) 1px, transparent 1px)`,
+          backgroundImage: `radial-gradient(circle, rgba(5,24,105,0.4) 1px, transparent 1px)`,
           backgroundSize: '48px 48px',
         }}
       />
@@ -74,54 +112,54 @@ export default function ServicesSection() {
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 lg:px-16 py-28 md:py-36">
         {/* ── Section header ── */}
         <div className="mb-10">
-          <div className="flex items-center gap-4 mb-6">
+          <div className="flex items-center gap-4 mb-6 reveal stagger-0">
             <div className="w-8 h-px bg-[#FF4B41]" />
-            <span className="text-xs font-mono tracking-[0.3em] uppercase text-[#FF4B41]/90">
-              Our Services
+            <span className="text-xs font-mono tracking-[0.3em] uppercase text-[#FF4B41]/90" aria-label="Our Services">
+              <span data-letter-stream className="inline-block align-top" style={{ '--letter-base': '0ms' } as CSSProperties}>
+                {renderLetterStream('Our Services')}
+              </span>
             </span>
           </div>
 
           <h2
             id="services-heading"
-            className="text-white font-black leading-tight mb-6"
+            className="text-black font-black leading-tight mb-6 reveal stagger-1"
             style={{
               fontSize: 'clamp(2.5rem, 6vw, 5rem)',
               fontFamily: 'var(--font-display)',
               maxWidth: '18ch',
             }}
+            aria-label="Every Mode. Every Route."
           >
-            Every Mode.{' '}
-            <span
-              style={{
-                // Warm Red mix gradient
-                background: 'linear-gradient(135deg, #FF4B41, #FFACA8)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
-              Every Route.
+            <span data-letter-stream className="inline-block align-top" style={{ '--letter-base': '80ms' } as CSSProperties}>
+              {renderLetterStream('Every Mode. ')}
+            </span>
+            <span style={{ color: '#FF4B41' }}>
+              <span data-letter-stream className="inline-block align-top" style={{ '--letter-base': '150ms' } as CSSProperties}>
+                {renderLetterStream('Every Route.')}
+              </span>
             </span>
           </h2>
 
           <p
-            className="text-white/60 text-lg max-w-2xl leading-relaxed"
+            className="text-black/60 text-lg max-w-2xl leading-relaxed reveal stagger-2"
             style={{ fontFamily: 'var(--font-body)' }}
+            aria-label="GravityFreight operates as the single point of control across land, ocean, and air — combining carrier networks, customs expertise, and real-time technology into one seamless freight operation."
           >
-            GravityFreight operates as the single point of control across land, ocean, and air — 
-            combining carrier networks, customs expertise, and real-time technology into one 
-            seamless freight operation.
+            <span data-letter-stream className="inline-block align-top" style={{ '--letter-base': '220ms' } as CSSProperties}>
+              {renderLetterStream('GravityFreight operates as the single point of control across land, ocean, and air — combining carrier networks, customs expertise, and real-time technology into one seamless freight operation.')}
+            </span>
           </p>
         </div>
 
         {/* ── Service Cards Carousel ── */}
-        <div className="-mx-6 md:-mx-12 lg:-mx-16">
+        <div className="-mx-6 md:-mx-12 lg:-mx-16 reveal stagger-3">
           <Carousel items={carouselItems} />
         </div>
 
         {/* ── Bottom CTA strip ── */}
         <div
-          className="mt-20 flex flex-col md:flex-row items-center justify-between gap-6 p-8 rounded-2xl"
+          className="mt-20 flex flex-col md:flex-row items-center justify-between gap-6 p-8 rounded-2xl reveal stagger-4"
           style={{
             background: 'linear-gradient(135deg, rgba(255,75,65,0.08) 0%, rgba(255,75,65,0.02) 100%)',
             border: '1px solid rgba(255,75,65,0.15)',
@@ -129,12 +167,12 @@ export default function ServicesSection() {
         >
           <div>
             <h3
-              className="text-white text-xl font-bold mb-1"
+              className="text-black text-xl font-bold mb-1"
               style={{ fontFamily: 'var(--font-display)' }}
             >
               Need a custom freight solution?
             </h3>
-            <p className="text-[#FFFFFF]/60 text-sm font-mono">
+            <p className="text-black/60 text-sm font-mono">
               Speak to a GravityFreight specialist. We lift what others can&apos;t.
             </p>
           </div>
@@ -152,7 +190,7 @@ export default function ServicesSection() {
             </button>
             <button
               id="contact-specialist-btn"
-              className="px-6 py-3 text-sm font-bold tracking-widest uppercase rounded border border-white/20 text-white/80 hover:border-[#FF4B41]/50 hover:text-white transition-all duration-300"
+              className="px-6 py-3 text-sm font-bold tracking-widest uppercase rounded border border-black/20 text-black/80 hover:border-[#FF4B41]/50 hover:text-black transition-all duration-300"
               style={{ fontFamily: 'var(--font-display)' }}
             >
               Contact Specialist
@@ -162,8 +200,8 @@ export default function ServicesSection() {
 
         {/* ── Footer strip ── */}
         <div
-          className="mt-16 flex flex-col md:flex-row items-center justify-between gap-4 pt-8"
-          style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}
+          className="mt-16 flex flex-col md:flex-row items-center justify-between gap-4 pt-8 reveal stagger-5"
+          style={{ borderTop: '1px solid rgba(5,24,105,0.1)' }}
         >
           <div className="flex items-center gap-3">
             <div className="w-6 h-6 rounded flex items-center justify-center"
@@ -172,18 +210,23 @@ export default function ServicesSection() {
                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
               </svg>
             </div>
-            <span className="text-white font-bold tracking-wider text-sm"
+            <span className="text-black font-bold tracking-wider text-sm"
               style={{ fontFamily: 'var(--font-display)' }}>
               GRAVITYFREIGHT
             </span>
           </div>
-          <p className="text-[#FFFFFF]/40 text-xs font-mono tracking-widest">
-            © 2025 GravityFreight. We Move What Others Can&apos;t Lift.
-          </p>
-          <div className="flex gap-6 text-[#FFFFFF]/40 text-xs font-mono tracking-wider">
-            <span className="hover:text-white transition-colors cursor-pointer">Privacy</span>
-            <span className="hover:text-white transition-colors cursor-pointer">Terms</span>
-            <span className="hover:text-white transition-colors cursor-pointer">Carriers</span>
+          <div className="flex flex-col items-center text-center gap-1">
+            <p className="text-black/40 text-xs font-mono tracking-widest mt-4 md:mt-0">
+              © 2025 GravityFreight. We Move What Others Can&apos;t Lift.
+            </p>
+            <p className="text-black/70 text-[10px] font-bold tracking-[0.2em] uppercase">
+              Powered by Websmith&apos;s
+            </p>
+          </div>
+          <div className="flex gap-6 text-black/40 text-xs font-mono tracking-wider">
+            <span className="hover:text-black transition-colors cursor-pointer">Privacy</span>
+            <span className="hover:text-black transition-colors cursor-pointer">Terms</span>
+            <span className="hover:text-black transition-colors cursor-pointer">Carriers</span>
           </div>
         </div>
       </div>

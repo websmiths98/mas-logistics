@@ -8,8 +8,9 @@
   --navy-900: #060a14;
   --navy-800: #0a1020;
   --slate-700: #1e2a3a;
-  --amber-400: #f59e0b;
-  --amber-300: #fcd34d;
+  --amber-400: #db6d6d;
+  /* --amber-300: #fcd34d; */
+  --amber-300: #ae3333;
   --cyan-400: #22d3ee;
   --sky-300: #7dd3fc;
 
@@ -65,9 +66,9 @@ body {
    Defined here as a named custom property for reference / override.  ── */
 :root {
   --shadow-panel-depth:
-    0 -28px 90px rgba(0,0,0,0.70),
-    0 -10px 36px rgba(0,0,0,0.55),
-    0 -2px  10px rgba(0,0,0,0.45);
+    0 -28px 90px rgba(0, 0, 0, 0.70),
+    0 -10px 36px rgba(0, 0, 0, 0.55),
+    0 -2px 10px rgba(0, 0, 0, 0.45);
 }
 
 /* ── Parallax Performance Utility ── */
@@ -88,7 +89,7 @@ body {
 }
 
 .card-flip-inner {
-  transform-style:  preserve-3d;
+  transform-style: preserve-3d;
   -webkit-transform-style: preserve-3d;
   /* Slow, cinematic flip — matches premium content reveal cadence */
   transition: transform 0.85s cubic-bezier(0.45, 0, 0.12, 1);
@@ -111,21 +112,21 @@ body {
    Used by HeroPanel content card, stat chip, CTA strip etc.
    ──────────────────────────────────────────────────────────── */
 .glass-dark {
-  background:           rgba(0, 0, 0, 0.22);
-  backdrop-filter:      blur(18px) saturate(1.8);
+  background: rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(18px) saturate(1.8);
   -webkit-backdrop-filter: blur(18px) saturate(1.8);
-  border:               1px solid rgba(255,255,255,0.10);
-  box-shadow:           0 8px 48px rgba(0,0,0,0.38),
-                        inset 0 1px 0 rgba(255,255,255,0.08);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow: 0 8px 48px rgba(0, 0, 0, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .glass-light {
-  background:           rgba(255,255,255,0.55);
-  backdrop-filter:      blur(20px) saturate(1.8);
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(20px) saturate(1.8);
   -webkit-backdrop-filter: blur(20px) saturate(1.8);
-  border:               1px solid rgba(255,255,255,0.6);
-  box-shadow:           0 8px 40px rgba(0,0,0,0.08),
-                        inset 0 1px 0 rgba(255,255,255,0.7);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
 /* ── GSAP-style scroll reveal — initial state is set by JS.
@@ -183,9 +184,9 @@ img {
 .reveal-right,
 .reveal-scale {
   transition:
-    opacity   1.05s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 1.05s cubic-bezier(0.22, 1, 0.36, 1),
     transform 1.05s cubic-bezier(0.22, 1, 0.36, 1),
-    filter    0.70s cubic-bezier(0.22, 1, 0.36, 1);
+    filter 0.70s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, transform;
 }
 
@@ -290,24 +291,68 @@ img {
    so re-entry always starts fresh with no leftover timing.
    Total span: stagger-0 → stagger-11 covers 0 → 1430 ms
    ════════════════════════════════════════════════════════════════ */
-.stagger-0.is-visible  { transition-delay: 0ms;    }
-.stagger-1.is-visible  { transition-delay: 130ms;  }
-.stagger-2.is-visible  { transition-delay: 260ms;  }
-.stagger-3.is-visible  { transition-delay: 390ms;  }
-.stagger-4.is-visible  { transition-delay: 520ms;  }
-.stagger-5.is-visible  { transition-delay: 650ms;  }
-.stagger-6.is-visible  { transition-delay: 780ms;  }
-.stagger-7.is-visible  { transition-delay: 910ms;  }
-.stagger-8.is-visible  { transition-delay: 1040ms; }
-.stagger-9.is-visible  { transition-delay: 1170ms; }
-.stagger-10.is-visible { transition-delay: 1300ms; }
-.stagger-11.is-visible { transition-delay: 1430ms; }
+.stagger-0.is-visible {
+  transition-delay: 0ms;
+}
+
+.stagger-1.is-visible {
+  transition-delay: 180ms;
+}
+
+.stagger-2.is-visible {
+  transition-delay: 360ms;
+}
+
+.stagger-3.is-visible {
+  transition-delay: 540ms;
+}
+
+.stagger-4.is-visible {
+  transition-delay: 720ms;
+}
+
+.stagger-5.is-visible {
+  transition-delay: 900ms;
+}
+
+.stagger-6.is-visible {
+  transition-delay: 1080ms;
+}
+
+.stagger-7.is-visible {
+  transition-delay: 1260ms;
+}
+
+.stagger-8.is-visible {
+  transition-delay: 1440ms;
+}
+
+.stagger-9.is-visible {
+  transition-delay: 1620ms;
+}
+
+.stagger-10.is-visible {
+  transition-delay: 1800ms;
+}
+
+.stagger-11.is-visible {
+  transition-delay: 1980ms;
+}
 
 /* On EXIT — zero delay so elements snap back immediately,
    keeping re-entry always crisp and unblocked.          */
-.stagger-0,  .stagger-1,  .stagger-2,  .stagger-3,
-.stagger-4,  .stagger-5,  .stagger-6,  .stagger-7,
-.stagger-8,  .stagger-9,  .stagger-10, .stagger-11 {
+.stagger-0,
+.stagger-1,
+.stagger-2,
+.stagger-3,
+.stagger-4,
+.stagger-5,
+.stagger-6,
+.stagger-7,
+.stagger-8,
+.stagger-9,
+.stagger-10,
+.stagger-11 {
   transition-delay: 0ms;
 }
 
@@ -362,10 +407,12 @@ img {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+
   .will-change-transform {
     will-change: auto;
     transform: none !important;
   }
+
   /* Skip all reveal animations immediately */
   .reveal,
   .reveal-left,
@@ -376,10 +423,66 @@ img {
     filter: none !important;
     transition: none !important;
   }
+
   [data-letter-stream] .letter {
     opacity: 1 !important;
     transform: none !important;
     filter: none !important;
     transition: none !important;
   }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   STACKED CARD HOVER EXPANSION GALLERY
+   ══════════════════════════════════════════════════════════════ */
+.card-stack {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+}
+
+.stacked-card {
+  position: relative;
+  /* Overlap cards horizontally */
+  margin-left: -90px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  
+  /* Smooth high-end ease as requested */
+  transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.stacked-card:first-child {
+  margin-left: 0;
+}
+
+/* Pyramidal Z-Index (forces center on top by default) */
+.stacked-card:nth-child(1) { z-index: 10; }
+.stacked-card:nth-child(2) { z-index: 20; }
+.stacked-card:nth-child(3) { z-index: 30; } /* Typical Center */
+.stacked-card:nth-child(4) { z-index: 20; }
+.stacked-card:nth-child(5) { z-index: 10; }
+.stacked-card:nth-child(6) { z-index: 5;  }
+
+/* === Expansion Logic === */
+
+/* When the stack is active, cards left of target slide LEFT */
+.card-stack:hover .stacked-card {
+  transform: translateX(-120px);
+}
+
+/* The target itself pops UP, zooms, and sits squarely */
+.card-stack .stacked-card:hover {
+  transform: translateX(0) scale(1.1) !important;
+  z-index: 100 !important;
+  box-shadow: 0 24px 60px rgba(5, 24, 105, 0.15);
+}
+
+/* Cards right of target slide RIGHT */
+.card-stack .stacked-card:hover ~ .stacked-card {
+  transform: translateX(120px);
 }

@@ -38,6 +38,8 @@ export const metadata: Metadata = {
   },
 };
 
+import GlobalRevealTracker from "@/components/global/GlobalRevealTracker";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -49,7 +51,10 @@ export default function RootLayout({
       className={`${inter.variable} ${rajdhani.variable} h-full`}
       style={{ scrollBehavior: "smooth" }}
     >
-      <body className="min-h-full flex flex-col antialiased">{children}</body>
+      <body className="min-h-full flex flex-col antialiased">
+        <GlobalRevealTracker />
+        {children}
+      </body>
     </html>
   );
 }

@@ -3,6 +3,7 @@
 import { CSSProperties, Fragment, useCallback, useEffect, useRef } from 'react';
 import { useParallax } from '@/components/hooks/useParallax';
 import type { HeroPanelConfig } from './heroPanels';
+import CountUp from '@/components/ui/CountUp';
 
 interface HeroPanelProps {
   config: HeroPanelConfig;
@@ -392,10 +393,17 @@ export default function HeroPanel({ config, panelIndex, zIndex }: HeroPanelProps
           }}
         >
           <div
-            className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-none font-mono"
+            className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-none font-mono flex items-center"
             style={{ color: config.accentColorHex }}
           >
-            {config.stat.value}
+            <CountUp
+              from={0}
+              to={config.stat.value}
+              separator=","
+              direction="up"
+              duration={1.5}
+            />
+            {config.stat.suffix}
           </div>
           <div className="text-white/40 text-[9px] sm:text-xs tracking-widest uppercase mt-1 sm:mt-2 font-mono">
             {config.stat.label}

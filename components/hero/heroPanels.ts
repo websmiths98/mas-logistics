@@ -9,7 +9,7 @@ export interface HeroPanelConfig {
   headline: string;
   subheadline: string;
   description: string;
-  stat: { value: string; label: string };
+  stat: { value: number; suffix: string; label: string };
   badge: string;
   cta: string;
 }
@@ -27,7 +27,7 @@ export const heroPanels: HeroPanelConfig[] = [
     subheadline: 'Connecting Every Mile of the Road',
     description:
       'Full-truckload and LTL services across 180+ coverage zones. Real-time tracking, dedicated lanes, and express delivery SLAs that move your cargo when it matters most.',
-    stat: { value: '180+', label: 'Coverage Zones' },
+    stat: { value: 180, suffix: '+', label: 'Coverage Zones' },
     badge: 'Express Land Delivery • FTL/LTL • Last-Mile',
     cta: 'Plan a Land Shipment',
   },
@@ -43,7 +43,7 @@ export const heroPanels: HeroPanelConfig[] = [
     subheadline: 'FCL & LCL — Any Port, Any Cargo',
     description:
       'Full Container Load and Less-than-Container Load solutions backed by 40+ carrier partnerships. Customs brokerage, port-to-door freight forwarding, and reefer cargo expertise.',
-    stat: { value: '200+', label: 'Global Ports' },
+    stat: { value: 200, suffix: '+', label: 'Global Ports' },
     badge: 'FCL • LCL • Customs Brokerage • Reefer',
     cta: 'Book Ocean Freight',
   },
@@ -59,7 +59,7 @@ export const heroPanels: HeroPanelConfig[] = [
     subheadline: 'Charter & Commercial Air Cargo',
     description:
       'Time-critical air freight with guaranteed transit times. Air charter, consolidated cargo, dangerous goods handling (IATA-certified), and next-flight-out emergency logistics.',
-    stat: { value: '72hr', label: 'Global Transit' },
+    stat: { value: 72, suffix: 'hr', label: 'Global Transit' },
     badge: 'Air Charter • DG Cargo • IATA Certified',
     cta: 'Get Air Quote',
   },
